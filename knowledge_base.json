@@ -1,0 +1,17 @@
+{
+    "engine_won’t_start": {
+        "symptoms": "Engine cranks but doesn't start or makes no noise.",
+        "causes": ["Battery issue", "Ignition system failure"],
+        "solution": "Check battery connections, alternator, and ignition system."
+    },
+    "unusual_noise": {
+        "symptoms": "Knocking or screeching sounds from the engine.",
+        "causes": ["Loose belts", "Timing chain issue", "Worn-out engine mounts"],
+        "solution": "Inspect belts, timing chain, and engine mounts."
+    },
+    "overheating": {
+        "symptoms": "Temperature gauge in red zone or steam from the engine.",
+        "causes": ["Low coolant", "Faulty radiator", "Stuck thermostat"],
+        "solution": "Check coolant level, radiator, and thermostat."
+    }
+}
