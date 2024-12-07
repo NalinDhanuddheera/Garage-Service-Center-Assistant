@@ -1,27 +1,56 @@
+
 from experta import *
-from knowledge_base import KnowledgeBase
+import json
 
-class VehicleIssue(Fact):
-    """Information about the vehicle issue."""
-    pass
-
-class GarageServiceAssistant(KnowledgeEngine):
-    def __init__(self, knowledge_file):
+class CarProblemEngine(KnowledgeEngine):
+    def __init__(self, knowledge_base):
         super().__init__()
-        self.knowledge_base = KnowledgeBase(knowledge_file)
+        self.knowledge_base = knowledge_base
+        self.result = None
 
-    @Rule(VehicleIssue(issue=MATCH.issue))
-    def diagnose_issue(self, issue):
-        data = self.knowledge_base.get_issue_data(issue)
-        if data:
-            self.declare(Fact(
-                symptoms=data['symptoms'],
-                causes=data['causes'],
-                solution=data['solution']
-            ))
+    def diagnose(self, issue, symptom, answers):
+        self.reset()
+        self.declare(Fact(issue=issue, symptom=symptom, answers=answers))
+        self.run()
+        return self.result
+
+    @Rule(Fact(issue=MATCH.issue), Fact(symptom=MATCH.symptom), Fact(answers=MATCH.answers))
+    def apply_rule(self, issue, symptom, answers):
+        best_match = None
+        max_matched_answers = 0
+        
+        for rule in self.knowledge_base["rules"]:
+            if rule["issue"] == issue and rule["symptom"] == symptom:
+                # Calculate how many answers match for this rule
+                matched_answers = sum(
+                    answers.get(q["question"]) == q["expected_answer"] 
+                    for q in rule["questions"]
+                )
+                if matched_answers > max_matched_answers:
+                    max_matched_answers = matched_answers
+                    best_match = rule
+
+        if best_match:
+            if max_matched_answers == len(best_match["questions"]):  
+                self.result = {
+                    "solution": best_match["solution"],
+                    "explanation": best_match["explanation"],
+                    "alternative": best_match["alternative"],
+                }
+            else:  
+                self.result = {
+                    "solution": best_match["solution"],
+                    "explanation": (
+                        "Some answers didn't match the expected input. "
+                        "This is the best possible solution based on your answers."
+                    ),
+                    "alternative": best_match["alternative"],
+                }
         else:
-            self.declare(Fact(solution="No solution found for the provided issue."))
+            # Fallback if no rules match
+            self.result = {
+                "solution": "Diagnosis not available.",
+                "explanation": "No rules matched your inputs.",
+                "alternative": "Please consult a professional mechanic for further assistance.",
+            }
 
-    @Rule(Fact(solution=MATCH.solution))
-    def provide_solution(self, solution):
-        print(f"Solution: {solution}")

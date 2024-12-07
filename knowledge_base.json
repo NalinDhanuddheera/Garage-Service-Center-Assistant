@@ -1,17 +1,257 @@
 {
-    "engine_won’t_start": {
-        "symptoms": "Engine cranks but doesn't start or makes no noise.",
-        "causes": ["Battery issue", "Ignition system failure"],
-        "solution": "Check battery connections, alternator, and ignition system."
+    "issues": {
+        "Engine": [ "Overheating", "Strange Noise", "Low Power"],
+        "Brakes": ["Soft Pedal", "Squeaking", "Pulling to One Side"],
+        "Transmission": ["Slipping", "Hard Shifting", "No Response"],
+        "Tires": ["Flat Tire", "Uneven Wear", "Low Pressure"],
+        "Cooling System": ["Coolant Leak", "Radiator Overheating", "Hose Crack"],
+        "Steering": ["Stiff Steering", "Vibration"],
+        "Suspension": ["Bouncy Ride"],
+        "Exhaust": ["Loud Noise", "Black Smoke", "Emission Warning"]
     },
-    "unusual_noise": {
-        "symptoms": "Knocking or screeching sounds from the engine.",
-        "causes": ["Loose belts", "Timing chain issue", "Worn-out engine mounts"],
-        "solution": "Inspect belts, timing chain, and engine mounts."
-    },
-    "overheating": {
-        "symptoms": "Temperature gauge in red zone or steam from the engine.",
-        "causes": ["Low coolant", "Faulty radiator", "Stuck thermostat"],
-        "solution": "Check coolant level, radiator, and thermostat."
-    }
+    "rules": [
+        {
+            "issue": "Engine",
+            "symptom": "Won't Start",
+            "questions": [
+                {"question": "Is the battery dead?", "expected_answer": "Yes"},
+                {"question": "Is the ignition system working?", "expected_answer": "No"}
+            ],
+            "solution": "Check and replace the car battery.",
+            "explanation": "A dead battery or faulty ignition system often prevents the engine from starting.",
+            "alternative": "Inspect the starter motor and alternator."
+        },
+        {
+            "issue": "Engine",
+            "symptom": "Overheating",
+            "questions": [
+                {"question": "Is the coolant level low?", "expected_answer": "Yes"},
+                {"question": "Are there leaks in the cooling system?", "expected_answer": "Yes"}
+            ],
+            "solution": "Refill the coolant and repair any leaks.",
+            "explanation": "Overheating is often caused by insufficient coolant or leaks in the system.",
+            "alternative": "Check the radiator and thermostat."
+        },
+        {
+            "issue": "Engine",
+            "symptom": "Strange Noise",
+            "questions": [
+                {"question": "Is the noise coming from the engine bay?", "expected_answer": "Yes"},
+                {"question": "Does the noise get louder with acceleration?", "expected_answer": "Yes"}
+            ],
+            "solution": "Inspect the belts, pulleys, and timing chain.",
+            "explanation": "Strange noises can be caused by worn or loose engine components.",
+            "alternative": "Check the engine mounts for damage."
+        },
+        {
+            "issue": "Engine",
+            "symptom": "Low Power",
+            "questions": [
+                {"question": "Is the air filter clogged?", "expected_answer": "Yes"},
+                {"question": "Are the spark plugs in good condition?", "expected_answer": "No"}
+            ],
+            "solution": "Replace the air filter and spark plugs.",
+            "explanation": "Clogged air filters or faulty spark plugs can reduce engine performance.",
+            "alternative": "Check the fuel injectors and throttle body."
+        },
+        {
+            "issue": "Brakes",
+            "symptom": "Soft Pedal",
+            "questions": [
+                {"question": "Is there a brake fluid leak?", "expected_answer": "Yes"},
+                {"question": "Does the brake pedal sink to the floor?", "expected_answer": "Yes"}
+            ],
+            "solution": "Inspect and fix brake fluid leaks, then bleed the brakes.",
+            "explanation": "A soft brake pedal is often caused by air in the brake lines or fluid leaks.",
+            "alternative": "Check the brake master cylinder."
+        },
+        {
+            "issue": "Brakes",
+            "symptom": "Squeaking",
+            "questions": [
+                {"question": "Are the brake pads worn out?", "expected_answer": "Yes"},
+                {"question": "Is the noise continuous when braking?", "expected_answer": "Yes"}
+            ],
+            "solution": "Replace the brake pads.",
+            "explanation": "Squeaking is often caused by worn-out brake pads.",
+            "alternative": "Check the brake rotors for damage."
+        },
+        {
+            "issue": "Brakes",
+            "symptom": "Pulling to One Side",
+            "questions": [
+                {"question": "Is there uneven wear on the brake pads?", "expected_answer": "Yes"},
+                {"question": "Does the car pull when braking?", "expected_answer": "Yes"}
+            ],
+            "solution": "Inspect and replace uneven brake pads.",
+            "explanation": "Uneven brake pads can cause the car to pull to one side.",
+            "alternative": "Check the brake calipers for sticking."
+        },
+        {
+            "issue": "Transmission",
+            "symptom": "Slipping",
+            "questions": [
+                {"question": "Is the transmission fluid level low?", "expected_answer": "Yes"},
+                {"question": "Does the car lose power during acceleration?", "expected_answer": "Yes"}
+            ],
+            "solution": "Refill or replace the transmission fluid.",
+            "explanation": "Slipping is often caused by insufficient or degraded transmission fluid.",
+            "alternative": "Check the clutch or torque converter."
+        },
+        {
+            "issue": "Transmission",
+            "symptom": "Hard Shifting",
+            "questions": [
+                {"question": "Is the transmission fluid dirty?", "expected_answer": "Yes"},
+                {"question": "Are there any warning lights on the dashboard?", "expected_answer": "Yes"}
+            ],
+            "solution": "Replace the transmission fluid and inspect for error codes.",
+            "explanation": "Hard shifting is often caused by dirty transmission fluid or mechanical issues.",
+            "alternative": "Check the transmission solenoid."
+        },
+        {
+            "issue": "Transmission",
+            "symptom": "No Response",
+            "questions": [
+                {"question": "Does the car fail to move in any gear?", "expected_answer": "Yes"},
+                {"question": "Is the transmission fluid level correct?", "expected_answer": "No"}
+            ],
+            "solution": "Inspect and refill the transmission fluid.",
+            "explanation": "No response is often caused by incorrect fluid levels or internal issues.",
+            "alternative": "Check the gear linkage or clutch system."
+        },
+        {
+            "issue": "Tires",
+            "symptom": "Flat Tire",
+            "questions": [
+                {"question": "Is there visible damage to the tire?", "expected_answer": "Yes"},
+                {"question": "Is the tire completely deflated?", "expected_answer": "Yes"}
+            ],
+            "solution": "Replace or repair the flat tire.",
+            "explanation": "Flat tires are caused by punctures or damage.",
+            "alternative": "Check the rim for damage."
+        },
+        {
+            "issue": "Tires",
+            "symptom": "Uneven Wear",
+            "questions": [
+                {"question": "Are the tire treads unevenly worn?", "expected_answer": "Yes"},
+                {"question": "Is the wheel alignment incorrect?", "expected_answer": "Yes"}
+            ],
+            "solution": "Align the wheels and replace unevenly worn tires.",
+            "explanation": "Uneven tire wear is often caused by poor alignment or unbalanced tires.",
+            "alternative": "Inspect the suspension components."
+        },
+        {
+            "issue": "Tires",
+            "symptom": "Low Pressure",
+            "questions": [
+                {"question": "Is the tire pressure below the recommended level?", "expected_answer": "Yes"},
+                {"question": "Is there any visible damage or puncture?", "expected_answer": "Yes"}
+            ],
+            "solution": "Inflate the tire to the recommended pressure and repair any damage.",
+            "explanation": "Low tire pressure affects performance and safety.",
+            "alternative": "Inspect for slow leaks or valve stem damage."
+        },
+        {
+            "issue": "Cooling System",
+            "symptom": "Coolant Leak",
+            "questions": [
+                {"question": "Is there a visible puddle under the car?", "expected_answer": "Yes"},
+                {"question": "Is the coolant reservoir level low?", "expected_answer": "Yes"}
+            ],
+            "solution": "Repair or replace the leaking component (e.g., radiator, hoses).",
+            "explanation": "Coolant leaks are often caused by damaged hoses, a cracked radiator, or faulty seals.",
+            "alternative": "Check the water pump and thermostat."
+        },
+        {
+            "issue": "Cooling System",
+            "symptom": "Radiator Overheating",
+            "questions": [
+                {"question": "Is the radiator fan operational?", "expected_answer": "No"},
+                {"question": "Is the radiator clogged or dirty?", "expected_answer": "Yes"}
+            ],
+            "solution": "Clean or replace the radiator and inspect the cooling fan.",
+            "explanation": "Radiator overheating can occur due to a malfunctioning fan or clogged fins.",
+            "alternative": "Inspect the thermostat and coolant flow."
+        },
+        {
+            "issue": "Cooling System",
+            "symptom": "Hose Crack",
+            "questions": [
+                {"question": "Are there visible cracks in the hoses?", "expected_answer": "Yes"},
+                {"question": "Is there a loss of coolant pressure?", "expected_answer": "Yes"}
+            ],
+            "solution": "Replace the cracked hoses.",
+            "explanation": "Cracked hoses can lead to coolant leaks and reduced system efficiency.",
+            "alternative": "Inspect all hoses for wear and tear."
+        },
+        {
+            "issue": "Steering",
+            "symptom": "Stiff Steering",
+            "questions": [
+                {"question": "Is the power steering fluid level low?", "expected_answer": "Yes"},
+                {"question": "Is the steering system making noise?", "expected_answer": "Yes"}
+            ],
+            "solution": "Refill the power steering fluid and check for leaks.",
+            "explanation": "Stiff steering is often caused by low fluid levels or pump issues.",
+            "alternative": "Inspect the steering rack and pump."
+        },
+        {
+            "issue": "Steering",
+            "symptom": "Vibration",
+            "questions": [
+                {"question": "Is the steering wheel vibrating at high speeds?", "expected_answer": "Yes"},
+                {"question": "Are the tires properly balanced?", "expected_answer": "No"}
+            ],
+            "solution": "Balance the tires and inspect the suspension system.",
+            "explanation": "Vibration can be caused by unbalanced tires or suspension issues.",
+            "alternative": "Check the wheel alignment."
+        },
+        {
+            "issue": "Suspension",
+            "symptom": "Bouncy Ride",
+            "questions": [
+                {"question": "Are the shock absorbers or struts worn out?", "expected_answer": "Yes"},
+                {"question": "Is the car bouncing excessively after hitting a bump?", "expected_answer": "Yes"}
+            ],
+            "solution": "Replace the shock absorbers or struts.",
+            "explanation": "A bouncy ride is usually caused by worn-out suspension components.",
+            "alternative": "Inspect the springs and suspension bushings."
+        },
+        {
+            "issue": "Exhaust",
+            "symptom": "Loud Noise",
+            "questions": [
+                {"question": "Is there a hole or damage in the exhaust pipe?", "expected_answer": "Yes"},
+                {"question": "Is the muffler damaged?", "expected_answer": "Yes"}
+            ],
+            "solution": "Repair or replace the damaged exhaust components.",
+            "explanation": "Loud noise is often caused by leaks or damage in the exhaust system.",
+            "alternative": "Check the exhaust manifold for cracks."
+        },
+        {
+            "issue": "Exhaust",
+            "symptom": "Black Smoke",
+            "questions": [
+                {"question": "Is the air filter dirty or clogged?", "expected_answer": "Yes"},
+                {"question": "Is the fuel mixture too rich?", "expected_answer": "Yes"}
+            ],
+            "solution": "Replace the air filter and adjust the fuel mixture.",
+            "explanation": "Black smoke is typically caused by incomplete combustion due to a rich fuel mixture.",
+            "alternative": "Inspect the fuel injectors and oxygen sensor."
+        },
+        {
+            "issue": "Exhaust",
+            "symptom": "Emission Warning",
+            "questions": [
+                {"question": "Is the check engine light on?", "expected_answer": "Yes"},
+                {"question": "Are there any error codes related to emissions?", "expected_answer": "Yes"}
+            ],
+            "solution": "Diagnose and fix the specific error codes.",
+            "explanation": "Emission warnings are triggered by issues with the exhaust system or sensors.",
+            "alternative": "Inspect the catalytic converter and oxygen sensors."
+        }
+    ]
 }
+
