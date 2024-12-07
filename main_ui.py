@@ -1,83 +1,49 @@
-import tkinter as tk
-from tkinter import messagebox
-from inference_engine import GarageServiceAssistant, VehicleIssue
 
-# Function to handle issue diagnosis
-def diagnose_issue():
-    issue = issue_var.get()
-    if not issue:
-        messagebox.showwarning("Input Error", "Please select a vehicle issue.")
-        return
+import streamlit as st
+import json
+from inference_engine import CarProblemEngine
 
-    # Initialize the engine
-    engine = GarageServiceAssistant("knowledge_base.json")
-    engine.reset()
-    engine.declare(VehicleIssue(issue=issue))
-    engine.run()
+# Load knowledge base
+with open("knowledge_base.json") as f:
+    knowledge_base = json.load(f)
 
-    solutions = [fact['solution'] for fact in engine.facts.values() if 'solution' in fact]
-    if solutions:
-        result_label.config(text=f"Solution: {solutions[0]}", fg="green")
-    else:
-        result_label.config(text="No solution found for the issue.", fg="red")
+engine = CarProblemEngine(knowledge_base)
 
-# Create the main window
-root = tk.Tk()
-root.title("Garage Service Center Assistant")
-root.geometry("500x400")  # Adjust window size
-root.configure(bg="#f0f0f5")  # Light grey background
+# Streamlit App
+def main():
+    st.title("🚗 Garage Service Center Assistant")
+    st.subheader("Answer questions to diagnose your vehicle's problem.")
+    
+    issue = st.selectbox("Select Issue:", [""] + list(knowledge_base["issues"].keys()))
+    symptoms = knowledge_base["issues"].get(issue, [])
+    symptom = st.selectbox("Select Symptom:", [""] + symptoms)
 
-# Header Frame
-header_frame = tk.Frame(root, bg="#003366", pady=10)
-header_frame.pack(fill="x")
+    if issue and symptom:
+        st.write("### Answer the following questions:")
+        answers = {}
+        for rule in knowledge_base["rules"]:
+            if rule["issue"] == issue and rule["symptom"] == symptom:
+                for q in rule["questions"]:
+                    answer = st.radio(q["question"], ["", "Yes", "No"], key=q["question"])
+                    answers[q["question"]] = answer
+                break
 
-header_label = tk.Label(header_frame, text="Garage Service Center Assistant", 
-                        bg="#003366", fg="white", font=("Helvetica", 18, "bold"))
-header_label.pack()
+        if st.button("Diagnose"):
+            if all(answers.values()):  # Ensure all questions are answered
+                result = engine.diagnose(issue, symptom, answers)
+                st.success("🔧 Diagnosis Result:")
+                st.text(f"Solution: {result['solution']}")
+                st.info(f"📄 Explanation: {result['explanation']}")
+                st.warning(f"🔄 Alternative: {result['alternative']}")
+            else:
+                # Handle missing or mismatched answers
+                st.warning("⚠️ Some answers didn't match the expectations. Here's the most likely solution:")
+                result = engine.diagnose(issue, symptom, answers)
+                st.text(f"Solution: {result['solution']}")
+                st.info(f"📄 Explanation: {result['explanation']}")
+                st.warning(f"🔄 Alternative: {result['alternative']}")
 
-# Main Content Frame
-content_frame = tk.Frame(root, bg="#f0f0f5", padx=20, pady=20)
-content_frame.pack(expand=True, fill="both")
+# Run app
+if __name__ == "__main__":
+    main()
 
-# Issue Selection Section
-issue_label = tk.Label(content_frame, text="Select Vehicle Issue:", bg="#f0f0f5", 
-                    fg="#333333", font=("Helvetica", 14, "bold"))
-issue_label.pack(anchor="w", pady=10)
-
-issue_var = tk.StringVar()
-issues = [
-    "engine_won’t_start",
-    "unusual_noise",
-    "overheating"
-]
-
-for issue in issues:
-    tk.Radiobutton(content_frame, text=issue.replace('_', ' ').title(), 
-                variable=issue_var, value=issue, bg="#f0f0f5", fg="#333333", 
-                font=("Helvetica", 12), anchor="w").pack(anchor="w", padx=20)
-
-# Diagnose Button
-button_frame = tk.Frame(content_frame, bg="#f0f0f5")
-button_frame.pack(pady=20)
-
-diagnose_button = tk.Button(button_frame, text="Diagnose", 
-                            command=diagnose_issue, bg="#0059b3", 
-                            fg="white", font=("Helvetica", 14, "bold"), 
-                            relief="raised", padx=10, pady=5)
-diagnose_button.pack()
-
-# Result Section
-result_label = tk.Label(content_frame, text="", bg="#f0f0f5", 
-                        fg="#333333", font=("Helvetica", 12), wraplength=450)
-result_label.pack(pady=10)
-
-# Footer Frame
-footer_frame = tk.Frame(root, bg="#003366", pady=10)
-footer_frame.pack(fill="x")
-
-footer_label = tk.Label(footer_frame, text="Powered by AI Expert System", 
-                        bg="#003366", fg="white", font=("Helvetica", 10, "italic"))
-footer_label.pack()
-
-# Run the application
-root.mainloop()
